@@ -1,0 +1,23 @@
+name: Deploy to GitHub Pages
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Copy file to docs/
+        run: |
+          mkdir -p docs
+          cp javascript/index.html docs/index.html
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs/index.html
+          git commit -m "Deploy index.html to docs"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
